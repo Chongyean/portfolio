@@ -1,10 +1,12 @@
 import HeroImg from "@/assets/images/hero.jpg";
-import OlovaLogo from "@/assets/images/olova.png";
+// import OlovaLogo from "@/assets/images/olova.png";
+import ShibaWithHeadPhone from "@/assets/images/shibaWithHeadphone.jpg";
 
 export default function About() {
   return (
     <>
-      <section id="about" className="py-16 md:py-32  text-white bg-[#04081A]">
+      <section id="about" className="py-16 md:py-32  text-white bg-[#04081A]">git init
+
         <div className="mx-auto max-w-5xl space-y-8 px-6 md:space-y-16">
           <h2 className="relative z-10 max-w-xl text-4xl font-medium lg:text-5xl text-white">
             Developer, Designer, Creator, Innovator
@@ -24,11 +26,10 @@ export default function About() {
 
             <div className="relative space-y-4">
               <p className="text-white">
-                Hello! I'm Nazmul Hossain, a passionate JavaScript developer
-                specializing in creating innovative web solutions and
-                user-friendly interfaces.{" "}
+                I'm Chongyean Taing, a passionate IT student at the Royal University of Phnom Penh 
+                majoring in Information Technology Engineering.{" "}
                 <span className="font-bold text-white">
-                  As the creator of the OlovaJS UI Framework
+                  As the Software Engineer Goal for my self
                 </span>
                 , I'm dedicated to simplifying development workflows.
               </p>
@@ -43,25 +44,22 @@ export default function About() {
                 <blockquote className="border-l-4 border-gray-300 pl-4">
                   <p className="text-white">
                     I'm a lifelong learner and innovator, driven by a desire to
-                    contribute to the developer community with new ideas and
-                    tools that deliver real value. As the creator of OlovaJS,
-                    I'm pushing the boundaries of JavaScript frameworks to
-                    empower developers worldwide.
+                    contribute to the developer community.
                   </p>
 
                   <div className="mt-6 space-y-3">
                     <cite className="block font-medium text-white">
-                      Nazmul Hossain, Creator of
+                      Taing Chongyean, Creator of
                     </cite>
                     <div className="flex items-center gap-2">
                       <img
                         className="h-5 w-fit"
-                        src={OlovaLogo}
-                        alt="Olova Logo"
+                        src={ShibaWithHeadPhone}
+                        alt="shibaWithHeadphone"
                         height="20"
                         width="auto"
                       />
-                      <span className="text-white">OlovaJS</span>
+                      <span className="text-white">Rork Rark</span>
                     </div>
                   </div>
                 </blockquote>
