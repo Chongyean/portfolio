@@ -5,14 +5,14 @@ import PropTypes from "prop-types";
 
 const projects = [
   {
-    title: "Olova! A Lightweight JavaScript Library",
+    title: "12AM-Ecommerce Website",
     description:
-      "A lightweight JavaScript library for creating beautiful, responsive UI components.",
+      "A modern e-commerce website built with React, Tailwind CSS, and Firebase. It features a sleek design, user authentication, product management, and a shopping cart.",
     src: "rock.jpg",
     link: "https://i.postimg.cc/DwgWTfP0/Annotation-2025-03-19-113338.png",
     color: "#5196fd",
-    githubLink: "https://github.com/olovajs/olova",
-    liveLink: "https://olova.js.org/",
+    githubLink: "https://github.com/NEXGEN-12AM/12AM",
+    liveLink: "#",
   },
   {
     title: "A sleek portfolio built with React and Tailwind CSS ",

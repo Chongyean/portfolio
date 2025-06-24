@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import EducationLoader from "@/components/ui/EducationLoader";
+// import EducationLoader from "@/components/ui/EducationLoader";
+// import ruppLogo from "@/assets/images/rupp_logo.png";
 import {
   Star,
   Award,
@@ -15,24 +16,29 @@ const EducationSection = () => {
 
   const educationData = [
     {
-      degree: "Secondary School Certificate (SSC)",
-      school: "Natore Textile Institute",
+      degree: "សញ្ញាប័ត្រមធ្យមសិក្សាទុតិយភូមិ",
+      school: "Pursat High School",
       mascot: "📘",
-      year: "2019-2021",
-      achievements: ["GPA: 4.89", "Subject: Science"],
-      skills: ["Mathematics", "Physics", "Chemistry", "Biology"],
+      year: "2021 - 2022",
+      achievements: ["Grade: B", "Subject: Science"],
+      skills: ["Mathematics", "Physics", "Chemistry", "Biology", "English", "Khmer"],
       description:
-        "Focused on core science subjects with emphasis on practical laboratory work and scientific research methodologies.",
+        "Achieved high academic performance with a focus on science subjects, demonstrating strong analytical",
     },
     {
-      degree: "Higher Secondary Certificate (HSC)",
-      school: "Dottopara Model Degree College",
+      degree: "Information Technology Engineering",
+      school: "Royal University of Phnom Penh",
       mascot: "📗",
-      year: "2021-2023",
-      achievements: ["GPA: 4.25", "Subject: Arts"],
-      skills: ["Literature", "Social Studies", "Economics", "History"],
+      year: "2023 - Present",
+      achievements: ["GPA: N/A", "Subject: ITE"],
+      skills: [
+        "Networking", "Programming", "Database Management", "Web Development", 
+        "Cybersecurity", "Cloud Computing", "Mobile Development", "Data Science",
+        "Machine Learning", "AI", "Blockchain","Professionalism Computing & Ethics",
+        "Software Engineering"
+      ],
       description:
-        "Developed strong analytical and critical thinking skills through comprehensive study of humanities and social sciences.",
+        "Currently pursuing a degree in Information Technology Engineering, focusing on various aspects of IT including networking, programming, and cybersecurity. Engaged in hands-on projects and collaborative learning.",
     },
   ];
 
