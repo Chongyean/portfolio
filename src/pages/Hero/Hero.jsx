@@ -48,22 +48,24 @@ export default function Hero() {
 
   const [code] = useState(`
 const profile = {
-    name: 'Nazmul Hossain',
-    title: 'Full-Stack Developer | Cloud Enthusiast | Problem Solver',
+    name: 'Taing Chongyean',
+    title: 'Java Developer | Problem Solver',
     skills: [
         'React', 'NextJS', 'Express',
-        'MySQL', 'MongoDB', 'Docker', 'AWS', 'TypeScript',
-        'Git', 'Linux', 'Discord Development'
+        'MySQL', 'AWS',
+        'Git', 'Linux', 
+        'Discord Development',
+        'Java', 'Spring Boot', 'Tailwind CSS'
     ],
-    hardWorker: true,
+    hardWorker: true && false,
     quickLearner: true,
     problemSolver: true,
-    yearsOfExperience: 1, 
+    yearsOfExperience: N/A, 
     hireable: function() {
         return (
             this.hardWorker &&
             this.problemSolver &&
-            this.skills.length >= 5 &&
+            this.skills.length >= league of legend &&
             this.yearsOfExperience >= 2
         );
     }

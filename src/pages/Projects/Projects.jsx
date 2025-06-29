@@ -2,6 +2,7 @@ import { ReactLenis } from "lenis/react";
 import { useTransform, motion, useScroll } from "framer-motion";
 import { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
+import ProjectEcommerce from "../../assets/images/12AM.png";
 
 const projects = [
   {
@@ -9,41 +10,41 @@ const projects = [
     description:
       "A modern e-commerce website built with React, Tailwind CSS, and Firebase. It features a sleek design, user authentication, product management, and a shopping cart.",
     src: "rock.jpg",
-    link: "https://i.postimg.cc/DwgWTfP0/Annotation-2025-03-19-113338.png",
+    link: ProjectEcommerce, // Use the imported image here
     color: "#5196fd",
     githubLink: "https://github.com/NEXGEN-12AM/12AM",
     liveLink: "#",
   },
-  {
-    title: "A sleek portfolio built with React and Tailwind CSS ",
-    description:
-      "A sleek portfolio built with React and Tailwind CSS to showcase your skills, projects, and experience in a modern design.",
-    src: "tree.jpg",
-    link: "https://i.postimg.cc/J75CKyrs/Annotation-2025-04-01-203959.png",
-    color: "#8f89ff",
-    githubLink: "https://github.com/seraprogrammer/portfolio",
-    liveLink: "https://codervai.vercel.app",
-  },
-  {
-    title: "🚀 CodeWhisperer",
-    description:
-      "🚀 CodeWhisperer A powerful online code editor built with React and Tailwind CSS. Featuring real-time code execution, syntax highlighting, multi-language support, and a sleek UI. Start coding instantly! 💻✨",
-    src: "water.jpg",
-    link: "https://i.postimg.cc/J4jPVFY0/Annotation-2025-04-01-204723.png",
-    color: "#fff",
-    githubLink: "https://github.com/seraprogrammer/codewhisperer",
-    liveLink: "https://codewhisperer.vercel.app/",
-  },
-  {
-    title: "CodeKori 🔥",
-    description:
-      "CodeKori is a powerful online code editor built with React and Tailwind CSS. Featuring real-time code execution, syntax highlighting, multi-language support, and a sleek UI. Start coding instantly! 💻✨",
-    src: "house.jpg",
-    link: "https://i.postimg.cc/cHQr4fpR/Annotation-2025-04-01-205350.png",
-    color: "#ed649e",
-    githubLink: "https://github.com/seraprogrammer/CodeKori",
-    liveLink: "https://codekori.js.org",
-  },
+  // {
+  //   title: "A sleek portfolio built with React and Tailwind CSS ",
+  //   description:
+  //     "A sleek portfolio built with React and Tailwind CSS to showcase your skills, projects, and experience in a modern design.",
+  //   src: "tree.jpg",
+  //   link: "https://i.postimg.cc/J75CKyrs/Annotation-2025-04-01-203959.png",
+  //   color: "#8f89ff",
+  //   githubLink: "https://github.com/seraprogrammer/portfolio",
+  //   liveLink: "#",
+  // },
+  // {
+  //   title: "🚀 CodeWhisperer",
+  //   description:
+  //     "🚀 CodeWhisperer A powerful online code editor built with React and Tailwind CSS. Featuring real-time code execution, syntax highlighting, multi-language support, and a sleek UI. Start coding instantly! 💻✨",
+  //   src: "water.jpg",
+  //   link: "https://i.postimg.cc/J4jPVFY0/Annotation-2025-04-01-204723.png",
+  //   color: "#fff",
+  //   githubLink: "https://github.com/seraprogrammer/codewhisperer",
+  //   liveLink: "#",
+  // },
+  // {
+  //   title: "CodeKori 🔥",
+  //   description:
+  //     "CodeKori is a powerful online code editor built with React and Tailwind CSS. Featuring real-time code execution, syntax highlighting, multi-language support, and a sleek UI. Start coding instantly! 💻✨",
+  //   src: "house.jpg",
+  //   link: "https://i.postimg.cc/cHQr4fpR/Annotation-2025-04-01-205350.png",
+  //   color: "#ed649e",
+  //   githubLink: "https://github.com/seraprogrammer/CodeKori",
+  //   liveLink: "#",
+  // },
 ];
 
 export default function Projects() {
