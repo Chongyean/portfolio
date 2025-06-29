@@ -43,7 +43,8 @@ const GridBackground = () => {
 export default function Hero() {
   const words = [
     "Java Developer & UI/UX Enthusiast",
-    "Linux & GitHub for DevOps Enthusiast",
+    "League of Legends Player",
+    
   ];
 
   const [code] = useState(`
