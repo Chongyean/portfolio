@@ -15,26 +15,26 @@ const projects = [
     githubLink: "https://github.com/NEXGEN-12AM/12AM",
     liveLink: "#",
   },
-  // {
-  //   title: "A sleek portfolio built with React and Tailwind CSS ",
-  //   description:
-  //     "A sleek portfolio built with React and Tailwind CSS to showcase your skills, projects, and experience in a modern design.",
-  //   src: "tree.jpg",
-  //   link: "https://i.postimg.cc/J75CKyrs/Annotation-2025-04-01-203959.png",
-  //   color: "#8f89ff",
-  //   githubLink: "https://github.com/seraprogrammer/portfolio",
-  //   liveLink: "#",
-  // },
-  // {
-  //   title: "🚀 CodeWhisperer",
-  //   description:
-  //     "🚀 CodeWhisperer A powerful online code editor built with React and Tailwind CSS. Featuring real-time code execution, syntax highlighting, multi-language support, and a sleek UI. Start coding instantly! 💻✨",
-  //   src: "water.jpg",
-  //   link: "https://i.postimg.cc/J4jPVFY0/Annotation-2025-04-01-204723.png",
-  //   color: "#fff",
-  //   githubLink: "https://github.com/seraprogrammer/codewhisperer",
-  //   liveLink: "#",
-  // },
+  {
+    title: " 12AM Design Prototype ",
+    description:
+      " A design prototype of the 12AM e-commerce website created using Figma. It showcases a modern and user-friendly interface with a focus on product display and navigation.",
+    src: "tree.jpg",
+    link: "https://i.postimg.cc/xdk4bXf4/Screenshot-2025-08-04-150743.png",
+    color: "#8f89ff",
+    githubLink: "https://www.figma.com/design/prEyFTXaALOXEsxQ92fBgU/12AM?node-id=0-1&t=YKb9kUIpKzabC3CL-1",
+    liveLink: "#",
+  },
+  {
+    title: " Homyz Estate 🏡",
+    description:
+      "🚀  Homyz Estate is a modern real estate website built with React and Tailwind CSS. It features a sleek design, property listings, and user-friendly navigation for an enhanced browsing experience.",
+    src: "water.jpg",
+    link: "https://i.postimg.cc/Dyxhrbhv/Screenshot-2025-08-04-151723.png",
+    color: "#fff",
+    githubLink: "https://github.com/Chongyean/homyzEstate",
+    liveLink: "https://real-estate-web.pages.dev/",
+  },
   // {
   //   title: "CodeKori 🔥",
   //   description:

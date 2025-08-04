@@ -30,7 +30,7 @@ const EducationSection = () => {
       school: "Royal University of Phnom Penh",
       mascot: "📗",
       year: "2023 - Present",
-      achievements: ["GPA: N/A", "Subject: ITE"],
+      achievements: ["GPA: 3.8", "Subject: ITE"],
       skills: [
         "Networking", "Programming", "Database Management", "Web Development", 
         "Cybersecurity", "Cloud Computing", "Mobile Development", "Data Science",
