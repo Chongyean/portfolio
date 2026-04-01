@@ -1,5 +1,7 @@
-import React from "react";
-import { Code2, Activity, Cpu, Layers, Network, Binary, Figma } from "lucide-react";
+/* eslint-disable react/prop-types */
+import { useMemo } from "react";
+import { motion } from "framer-motion";
+import { Code2, Layers, Figma } from "lucide-react";
 
 const ExperienceCard = ({
   title,
@@ -7,8 +9,15 @@ const ExperienceCard = ({
   period,
   description,
   icon: Icon,
+  index,
 }) => (
-  <div className="group relative overflow-hidden transform hover:-translate-y-2 transition-all duration-300">
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, amount: 0.25 }}
+    transition={{ duration: 0.45, delay: index * 0.08 }}
+    className="group relative overflow-hidden transform hover:-translate-y-2 transition-all duration-300"
+  >
     {/* Glass morphism effect */}
     <div className="absolute inset-0 backdrop-blur-lg bg-white/5 rounded-lg" />
 
@@ -33,6 +42,9 @@ const ExperienceCard = ({
             {period}
           </span>
         </div>
+        <span className="inline-flex w-fit rounded-md border border-cyan-500/30 bg-cyan-500/10 px-2 py-1 text-xs font-mono uppercase tracking-wide text-cyan-300">
+          Featured Role
+        </span>
         <p className="text-gray-300 border-l-4 border-blue-500/50 pl-4 mt-4 leading-relaxed">
           {description}
         </p>
@@ -48,14 +60,24 @@ const ExperienceCard = ({
         <div className="absolute bottom-0 left-0 w-[2px] h-6 bg-purple-500/50" />
       </div>
     </div>
-  </div>
+  </motion.div>
 );
 
 const ExperienceSection = () => {
+  const particles = useMemo(
+    () =>
+      Array.from({ length: 20 }, () => ({
+        top: `${Math.random() * 100}%`,
+        left: `${Math.random() * 100}%`,
+        delay: `${Math.random() * 5}s`,
+      })),
+    []
+  );
+
   const experiences = [
     {
       icon: Figma,
-      title: "UX/Ui Designer",
+      title: "UX/UI Designer",
       company: "Figma",
       period: "2024 - Present",
       description:
@@ -90,14 +112,14 @@ const ExperienceSection = () => {
 
         {/* Animated particles */}
         <div className="absolute inset-0">
-          {[...Array(20)].map((_, i) => (
+          {particles.map((particle, i) => (
             <div
               key={i}
               className="absolute w-2 h-2 bg-blue-500/20 rounded-full animate-float"
               style={{
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 5}s`,
+                top: particle.top,
+                left: particle.left,
+                animationDelay: particle.delay,
               }}
             />
           ))}
@@ -106,7 +128,13 @@ const ExperienceSection = () => {
         {/* Content container */}
         <div className="relative container mx-auto px-6 mt-10">
           {/* Section header with enhanced effects */}
-          <div className="flex flex-col items-center space-y-8 mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col items-center space-y-8 mb-20"
+          >
             <div className="relative">
               <h2 className="text-5xl md:text-7xl font-black text-transparent bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-center">
                 Professional Journey
@@ -114,14 +142,14 @@ const ExperienceSection = () => {
               <div className="absolute inset-0 -z-10 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur-3xl rounded-full" />
             </div>
             <p className="text-lg md:text-xl text-gray-400 font-medium tracking-wide text-center max-w-2xl">
-              "Transforming ideas into digital reality, one project at a time"
+              Transforming ideas into digital reality, one project at a time
             </p>
-          </div>
+          </motion.div>
 
           {/* Experience grid with improved layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
             {experiences.map((exp, index) => (
-              <ExperienceCard key={index} {...exp} />
+              <ExperienceCard key={index} index={index} {...exp} />
             ))}
           </div>
         </div>
