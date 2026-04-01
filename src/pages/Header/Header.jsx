@@ -39,7 +39,7 @@ export default function Header() {
       id: "education",
       icon: FaGraduationCap,
       text: "Education",
-      path: "/education",
+      path: "/education#certified",
     },
     { id: "projects", icon: FaLaptopCode, text: "Projects", path: "/projects" },
     { id: "contact", icon: FaEnvelope, text: "Contact", path: "/contact" },

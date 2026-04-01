@@ -6,13 +6,66 @@ import {
   BookOpen,
   GraduationCap,
   Trophy,
+  Binary,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import PropTypes from "prop-types";
 import gif200 from "../../assets/images/200.gif";
 import salaCyberIcon from "../../assets/images/salaCyber_icon.jpg";
 import hackerIcon from "../../assets/images/hacker_icon.jpg";
 import instinctIcon from "../../assets/images/instinct_icon.jpg";
 import ruppLogo from "../../assets/images/rupp_logo.png";
+
+// Floating Enchanted Particles Component
+const EnchantedParticles = ({ count = 20 }) => {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {Array.from({ length: count }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-1 h-1 bg-gradient-to-r from-emerald-300 via-lime-300 to-cyan-300 rounded-full"
+          initial={{
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            opacity: 0,
+          }}
+          animate={{
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight - 500,
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: Math.random() * 3 + 2,
+            repeat: Infinity,
+            repeatDelay: Math.random() * 2,
+            ease: "easeInOut",
+          }}
+          style={{
+            boxShadow: `0 0 ${Math.random() * 10 + 5}px rgba(16, 185, 129, 0.7)`,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+EnchantedParticles.propTypes = {
+  count: PropTypes.number,
+};
+
+// Hacker Glyph Component
+const HackerGlyph = () => {
+  return (
+    <motion.span
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: [0, 1, 0], scale: [0, 1, 0] }}
+      transition={{ duration: 0.8, repeat: Infinity, repeatDelay: 0.3 }}
+      className="inline-block"
+    >
+      <Binary size={20} className="text-emerald-300" />
+    </motion.span>
+  );
+};
 
 const EducationSection = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -131,12 +184,55 @@ const EducationSection = () => {
   };
 
   return (
-    <section className="min-h-screen relative overflow-hidden py-40 bg-[#04081A]">
+    <section className="min-h-screen relative overflow-hidden py-40 bg-[#040A0A]">
+      {/* Enchanted Particle Background */}
+      <EnchantedParticles count={30} />
+
       {/* Grid Background */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-grid-white/[0.05] bg-[length:50px_50px]" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#04081A] via-transparent to-[#04081A]" />
-        <div className="absolute inset-0 border border-white/[0.05] grid grid-cols-2 md:grid-cols-4" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,197,94,0.11)_0%,rgba(0,0,0,0)_65%)]" />
+        <div className="absolute inset-0 bg-grid-white/[0.04] bg-[length:44px_44px]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#020505] via-transparent to-[#040A0A]" />
+        <div className="absolute inset-0 border border-emerald-400/[0.08] grid grid-cols-2 md:grid-cols-4" />
+        
+        {/* Enchanted Glow Orbs */}
+        <motion.div
+          className="absolute top-20 left-10 w-72 h-72 bg-emerald-500/20 rounded-full mix-blend-screen filter blur-3xl"
+          animate={{
+            y: [0, -20, 0],
+            x: [0, 10, 0],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute bottom-20 right-10 w-72 h-72 bg-cyan-500/20 rounded-full mix-blend-screen filter blur-3xl"
+          animate={{
+            y: [0, 20, 0],
+            x: [0, -10, 0],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        />
+        <motion.div
+          className="absolute top-1/2 left-1/2 w-96 h-96 bg-lime-500/15 rounded-full mix-blend-screen filter blur-3xl -translate-x-1/2 -translate-y-1/2"
+          animate={{
+            opacity: [0.2, 0.4, 0.2],
+            scale: [0.8, 1.1, 0.8],
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        />
+
+        <motion.div
+          className="absolute inset-0"
+          animate={{ backgroundPositionY: ["0%", "100%"] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(180deg, rgba(16,185,129,0.04) 0px, rgba(16,185,129,0.04) 1px, transparent 2px, transparent 6px)",
+            mixBlendMode: "screen",
+          }}
+        />
       </div>
 
       <div className="max-w-6xl mx-auto px-4 relative z-10">
@@ -146,16 +242,25 @@ const EducationSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-transparent mb-6">
-            Educational Journey
-          </h2>
-          <p className="text-gray-300 max-w-2xl mx-auto text-lg">
-            Discover how academic excellence shapes innovative thinking and
-            professional growth.
-          </p>
+          <div className="flex justify-center items-center gap-3 mb-6">
+            <HackerGlyph />
+            <h2 className="text-4xl md:text-5xl font-bold font-mono tracking-[0.14em] uppercase bg-gradient-to-r from-emerald-300 via-lime-300 to-cyan-300 bg-clip-text text-transparent mb-0 drop-shadow-[0_0_14px_rgba(52,211,153,0.6)]">
+              Educational Journey
+            </h2>
+            <HackerGlyph />
+          </div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-emerald-100/80 max-w-2xl mx-auto text-lg"
+          >
+            Tracing the exploit-to-engineer path through rigorous training, systems thinking, and practical security craft.
+          </motion.p>
         </motion.div>
 
         <motion.div
+          id="certified"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -174,12 +279,90 @@ const EducationSection = () => {
               <motion.div
                 key={index}
                 variants={cardVariants}
-                className={`relative overflow-hidden border rounded-xl p-8 transition-all duration-300 bg-gray-900/50 backdrop-blur-sm ${
-                  isHovered ? "border-teal-500 scale-[1.02]" : "border-blue-400/20"
+                className={`relative overflow-hidden border rounded-xl p-8 transition-all duration-300 group ${
+                  isHovered ? "border-emerald-400/60 scale-[1.02]" : "border-cyan-400/20"
                 }`}
                 onMouseEnter={() => startSalaCyberHover(index, edu.school)}
                 onMouseLeave={() => endSalaCyberHover(edu.school)}
               >
+                {/* Enchanted Glow Background */}
+                <motion.div
+                  className="absolute inset-0 rounded-xl bg-gradient-to-br from-emerald-500/10 via-lime-500/5 to-cyan-500/10 opacity-0 group-hover:opacity-100"
+                  animate={{ opacity: isHovered ? 0.6 : 0.1 }}
+                  transition={{ duration: 0.3 }}
+                  style={{
+                    background: isHovered
+                      ? "radial-gradient(circle at 30% 30%, rgba(16, 185, 129, 0.2), rgba(132, 204, 22, 0.1), rgba(34, 211, 238, 0.1))"
+                      : "transparent",
+                  }}
+                />
+
+                {/* Shimmer Effect */}
+                {isHovered && (
+                  <motion.div
+                    className="absolute inset-0 rounded-xl opacity-30"
+                    animate={{
+                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                    }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    style={{
+                      background: "linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.2), transparent)",
+                      backgroundSize: "200% 100%",
+                    }}
+                  />
+                )}
+
+                {/* Magical Border Glow */}
+                {isHovered && (
+                  <motion.div
+                    className="absolute inset-0 rounded-xl pointer-events-none"
+                    animate={{
+                      boxShadow: [
+                        "0 0 20px rgba(16, 185, 129, 0.3), inset 0 0 20px rgba(16, 185, 129, 0.1)",
+                        "0 0 40px rgba(132, 204, 22, 0.4), inset 0 0 20px rgba(132, 204, 22, 0.2)",
+                        "0 0 20px rgba(34, 211, 238, 0.3), inset 0 0 20px rgba(34, 211, 238, 0.1)",
+                        "0 0 20px rgba(16, 185, 129, 0.3), inset 0 0 20px rgba(16, 185, 129, 0.1)",
+                      ],
+                    }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                )}
+
+                {/* Floating Sparkles on Hover */}
+                {isHovered && (
+                  <>
+                    <motion.div
+                      className="absolute -top-2 -right-2 w-2 h-2 bg-emerald-300 rounded-full"
+                      animate={{
+                        y: [0, -10, 0],
+                        x: [0, 5, 0],
+                        opacity: [0, 1, 0],
+                      }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                      style={{ filter: "drop-shadow(0 0 4px rgba(16, 185, 129, 0.9))" }}
+                    />
+                    <motion.div
+                      className="absolute top-1/4 -right-1 w-1.5 h-1.5 bg-lime-300 rounded-full"
+                      animate={{
+                        y: [-10, 10, -10],
+                        x: [0, -8, 0],
+                        opacity: [0, 1, 0],
+                      }}
+                      transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}
+                      style={{ filter: "drop-shadow(0 0 3px rgba(132, 204, 22, 0.9))" }}
+                    />
+                    <motion.div
+                      className="absolute -bottom-2 left-1/3 w-1 h-1 bg-cyan-400 rounded-full"
+                      animate={{
+                        y: [0, 15, 0],
+                        opacity: [0, 1, 0],
+                      }}
+                      transition={{ duration: 1.8, repeat: Infinity, delay: 0.6 }}
+                      style={{ filter: "drop-shadow(0 0 3px rgba(34, 211, 238, 0.8))" }}
+                    />
+                  </>
+                )}
+
                 <AnimatePresence>
                   {isJumpscare && (
                     <motion.div
@@ -295,7 +478,7 @@ const EducationSection = () => {
                 </AnimatePresence>
 
                 <div
-                  className={`space-y-6 transition-all duration-200 ${
+                  className={`space-y-6 relative z-10 bg-[#05110F]/75 backdrop-blur-md rounded-lg p-4 -m-4 transition-all duration-200 ${
                     isJumpscare
                       ? "opacity-5 blur-[3px]"
                       : "opacity-100"
@@ -381,7 +564,7 @@ const EducationSection = () => {
                           href={edu.schoolLink}
                           target="_blank"
                           rel="noreferrer"
-                          className="hover:text-teal-400 transition-colors"
+                          className="hover:text-emerald-300 transition-colors"
                         >
                           {edu.school}
                         </a>
@@ -395,7 +578,7 @@ const EducationSection = () => {
                     </p>
                   </div>
 
-                  <p className="text-gray-300 text-sm italic border-l-2 border-teal-500 pl-3">
+                  <p className="text-emerald-100/75 text-sm italic border-l-2 border-emerald-500 pl-3">
                     {edu.description}
                   </p>
 
@@ -406,25 +589,38 @@ const EducationSection = () => {
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {edu.achievements.map((achievement, i) => (
-                        <div
+                        <motion.div
                           key={i}
-                          className="px-3 py-1 rounded-full bg-teal-500/10 text-teal-400 flex items-center gap-2 text-sm"
+                          whileHover={{ y: -2 }}
+                          className="relative px-3 py-1 rounded-full bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 text-emerald-200 flex items-center gap-2 text-sm border border-emerald-400/30 cursor-pointer group"
                         >
-                          <Award size={16} className="shrink-0" />
+                          <motion.span
+                            whileHover={{ rotate: 360 }}
+                            transition={{ duration: 0.6 }}
+                          >
+                            <Award size={16} className="shrink-0 group-hover:text-lime-300 transition-colors" />
+                          </motion.span>
                           <span>{achievement}</span>
-                        </div>
+                          <motion.div
+                            className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-50"
+                            animate={{ boxShadow: ["0 0 0px rgba(16, 185, 129, 0)", "0 0 15px rgba(16, 185, 129, 0.7)", "0 0 0px rgba(16, 185, 129, 0)"] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                            style={{ pointerEvents: "none" }}
+                          />
+                        </motion.div>
                       ))}
                     </div>
                   </div>
 
                   <div className="flex flex-wrap gap-2">
                     {edu.skills.map((skill, i) => (
-                      <span
+                      <motion.span
                         key={i}
-                        className="px-2 py-1 text-xs rounded bg-blue-500/10 text-blue-300"
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        className="px-2 py-1 text-xs rounded bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 border border-cyan-400/20 cursor-pointer hover:border-cyan-400/50 transition-colors"
                       >
                         {skill}
-                      </span>
+                      </motion.span>
                     ))}
                   </div>
                 </div>

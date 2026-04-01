@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Prism from "prismjs";
 import "prismjs/components/prism-javascript";
 import "@/assets/css/tomorrow.css";
@@ -41,6 +41,9 @@ const GridBackground = () => {
 };
 
 export default function Hero() {
+  const certifiedLabel = "Certified";
+  const glitchCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
+
   const words = [
     "Penetration Tester",
     "Web Application Hacker",
@@ -57,6 +60,10 @@ export default function Hero() {
 
   const [summaryIndex, setSummaryIndex] = useState(0);
   const [isSummaryRolling, setIsSummaryRolling] = useState(false);
+  const [contactButtonLabel, setContactButtonLabel] = useState("LinkedIn");
+  const [isContactAnimating, setIsContactAnimating] = useState(false);
+  const contactIntervalRef = useRef(null);
+  const contactTimeoutRef = useRef(null);
 
   const [code] = useState(`
 const profile = {
@@ -161,6 +168,84 @@ const profile = {
     return () => clearInterval(intervalId);
   }, [summaryWords.length]);
 
+  useEffect(() => {
+    return () => {
+      if (contactIntervalRef.current) {
+        clearInterval(contactIntervalRef.current);
+      }
+
+      if (contactTimeoutRef.current) {
+        clearTimeout(contactTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleCertifiedClick = (event) => {
+    event.preventDefault();
+
+    if (isContactAnimating) {
+      return;
+    }
+
+    setIsContactAnimating(true);
+
+    const totalDuration = 2000;
+    const stepDuration = 90;
+    const totalSteps = Math.ceil(totalDuration / stepDuration);
+    let stepIndex = 0;
+
+    setContactButtonLabel("LinkedIn");
+
+    if (contactIntervalRef.current) {
+      clearInterval(contactIntervalRef.current);
+    }
+
+    if (contactTimeoutRef.current) {
+      clearTimeout(contactTimeoutRef.current);
+    }
+
+    contactIntervalRef.current = setInterval(() => {
+      stepIndex += 1;
+
+      const revealCount = Math.min(
+        certifiedLabel.length,
+        Math.floor((stepIndex / totalSteps) * certifiedLabel.length)
+      );
+
+      const nextLabel = certifiedLabel
+        .split("")
+        .map((character, index) => {
+          if (index < revealCount) {
+            return character;
+          }
+
+          if (index === revealCount) {
+            return character;
+          }
+
+          return glitchCharacters[Math.floor(Math.random() * glitchCharacters.length)];
+        })
+        .join("");
+
+      setContactButtonLabel(nextLabel);
+
+      if (stepIndex >= totalSteps) {
+        clearInterval(contactIntervalRef.current);
+        contactIntervalRef.current = null;
+      }
+    }, stepDuration);
+
+    contactTimeoutRef.current = setTimeout(() => {
+      if (contactIntervalRef.current) {
+        clearInterval(contactIntervalRef.current);
+        contactIntervalRef.current = null;
+      }
+
+      setContactButtonLabel(certifiedLabel);
+      window.location.href = "/education#certified";
+    }, totalDuration);
+  };
+
   const previousSummaryWord =
     summaryWords[(summaryIndex - 1 + summaryWords.length) % summaryWords.length];
   const currentSummaryWord = summaryWords[summaryIndex];
@@ -212,7 +297,7 @@ const profile = {
               <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 mb-6 sm:mb-8 animate__animated animate__fadeInDown animate__delay-1s">
                 <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></div>
                 <span className="text-gray-300 text-xs sm:text-sm font-medium">
-                  Welcome to my universe
+                  Welcome to whoami
                 </span>
               </div>
 
@@ -281,7 +366,7 @@ const profile = {
                 >
                   <span className="block w-full px-6 sm:px-8 py-3 sm:py-4 rounded-[11px] bg-gray-900 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-teal-400">
                     <span className="relative flex items-center justify-center gap-2 text-white font-medium">
-                      <span>Learn More</span>
+                      <span>Github</span>
                       <i className="fas fa-arrow-right transform transition-all duration-300 group-hover:translate-x-1"></i>
                     </span>
                   </span>
@@ -289,12 +374,13 @@ const profile = {
 
                 {/* Contact Button */}
                 <a
-                  href="https://www.linkedin.com/in/chongyean/"
+                  href="/education#certified"
+                  onClick={handleCertifiedClick}
                   className="group relative inline-flex items-center justify-center gap-3 p-0.5 rounded-xl bg-gradient-to-r from-gray-800 to-gray-700 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_2rem_-0.5rem_#60A5FA]"
                 >
                   <span className="block w-full px-6 sm:px-8 py-3 sm:py-4 rounded-[11px] bg-gray-900 border border-gray-700/50 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-gray-800 group-hover:to-gray-700">
                     <span className="relative flex items-center justify-center gap-2 text-gray-300 font-medium group-hover:text-white">
-                      <span>On Maintain</span>
+                      <span>{contactButtonLabel}</span>
                       <i className="fas fa-envelope transform transition-all duration-300 group-hover:rotate-12"></i>
                     </span>
                   </span>
