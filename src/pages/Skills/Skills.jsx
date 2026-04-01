@@ -210,6 +210,29 @@ const SkillsSection = () => {
         // },
       ],
     },
+        {
+      icon: Paintbrush,
+      title: "Creative Skills",
+      color: "text-yellow-400",
+      skills: [
+        {
+          name: "UI Animation",
+          icon: <MdAnimation className="w-4 h-4 text-[#FF4081]" />,
+        },
+        {
+          name: "SVG Animation",
+          icon: <MdAnimation className="w-4 h-4 text-[#00C853]" />,
+        },
+        // {
+        //   name: "3D Modeling",
+        //   icon: <Cpu className="w-4 h-4 text-[#7C4DFF]" />,
+        // },
+        // {
+        //   name: "Motion Graphics",
+        //   icon: <MdAnimation className="w-4 h-4 text-[#FF6D00]" />,
+        // },
+      ],
+    },
   ];
 
   return (
