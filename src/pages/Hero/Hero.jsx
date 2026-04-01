@@ -42,34 +42,48 @@ const GridBackground = () => {
 
 export default function Hero() {
   const words = [
-    "Java Developer & UI/UX Enthusiast",
-    "League of Legends Player",
-    
+    "Penetration Tester",
+    "Web Application Hacker",
+    "Software Engineer",
+    "CVE Hunter",
+    "League of Legends Mid Laner",
   ];
+
+  const summaryWords = [
+    "Penetration Tester ",
+    "Red Team Practitioner",
+    "Coding the future",
+  ];
+
+  const [summaryIndex, setSummaryIndex] = useState(0);
+  const [isSummaryRolling, setIsSummaryRolling] = useState(false);
 
   const [code] = useState(`
 const profile = {
     name: 'Taing Chongyean',
-    title: 'Java Developer | Problem Solver',
+    alias: 'y34n',
+    title: 'Penetration Tester | Red Team | Software Engineer',
+    location: 'Phnom Penh, Cambodia 🇰🇭',
+
     skills: [
-        'React', 'NextJS', 'Express',
-        'MySQL', 'AWS',
-        'Git', 'Linux', 
-        'Discord Development',
-        'Java', 'Spring Boot', 'Tailwind CSS'
+        // Offensive
+        'Web Pentesting', 'Red Team Ops', 'API Exploitation',
+        'Burp Suite', 'Nmap', 'SQLMap', 'Metasploit',
+        // Dev
+        'React', 'NextJS', 'Spring Boot', 'Java', 'Python', 'JavaScript', 'C/C++',
+        // Infra
+        'Kali Linux', 'Docker', 'AWS', 'Git',
     ],
-    hardWorker: true && false,
-    quickLearner: true,
-    problemSolver: true,
-    yearsOfExperience: N/A, 
-    hireable: function() {
-        return (
-            this.hardWorker &&
-            this.problemSolver &&
-            this.skills.length >= league of legend &&
-            this.yearsOfExperience >= 2
-        );
-    }
+
+    traits: {
+        hardWorker: true,
+        quickLearner: true,
+        problemSolver: true,
+    },
+
+    hireable: () => true, // obviously
+
+    motto: 'Every system has a crack. I find it.',
 };
   `);
 
@@ -133,6 +147,25 @@ const profile = {
       window.removeEventListener("resize", checkResolution);
     };
   }, [code]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setIsSummaryRolling(true);
+
+      setTimeout(() => {
+        setSummaryIndex((prev) => (prev + 1) % summaryWords.length);
+        setIsSummaryRolling(false);
+      }, 620);
+    }, 3000);
+
+    return () => clearInterval(intervalId);
+  }, [summaryWords.length]);
+
+  const previousSummaryWord =
+    summaryWords[(summaryIndex - 1 + summaryWords.length) % summaryWords.length];
+  const currentSummaryWord = summaryWords[summaryIndex];
+  const nextSummaryWord = summaryWords[(summaryIndex + 1) % summaryWords.length];
+  const afterNextSummaryWord = summaryWords[(summaryIndex + 2) % summaryWords.length];
 
   return (
     <>
@@ -210,11 +243,33 @@ const profile = {
               </div>
 
               {/* Description */}
-              <div className="relative mb-8 sm:mb-12 max-w-xl">
-                <p className="text-base sm:text-xl text-gray-300/90 leading-relaxed">
-                  Java lover 🚀
-                  and coding the future 💻✨
-                </p>
+              <div className="relative mb-8 sm:mb-12 max-w-xl mx-auto lg:mx-0">
+                <div className="text-base sm:text-lg text-slate-300 text-center">
+                  <div className="relative h-[84px] overflow-hidden rounded-lg mx-auto">
+                    <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-b from-[#020617] via-transparent to-[#020617]" />
+                    <div className="pointer-events-none absolute left-0 right-0 top-1/2 z-10 h-7 -translate-y-1/2 rounded-md bg-slate-300/5" />
+                    <div
+                      className={`flex flex-col ${
+                        isSummaryRolling
+                          ? "-translate-y-7"
+                          : "translate-y-0"
+                      } transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]`}
+                    >
+                      <span className="h-7 leading-7 text-white/50 text-center">
+                        {previousSummaryWord}
+                      </span>
+                      <span className="h-7 leading-7 font-semibold text-white text-center">
+                        {currentSummaryWord}
+                      </span>
+                      <span className="h-7 leading-7 text-white/50 text-center">
+                        {nextSummaryWord}
+                      </span>
+                      <span className="h-7 leading-7 text-white/50 text-center">
+                        {afterNextSummaryWord}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* CTA Buttons */}
@@ -234,7 +289,7 @@ const profile = {
 
                 {/* Contact Button */}
                 <a
-                  href="https://www.facebook.com/taing.chongyean"
+                  href="https://www.linkedin.com/in/chongyean/"
                   className="group relative inline-flex items-center justify-center gap-3 p-0.5 rounded-xl bg-gradient-to-r from-gray-800 to-gray-700 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_2rem_-0.5rem_#60A5FA]"
                 >
                   <span className="block w-full px-6 sm:px-8 py-3 sm:py-4 rounded-[11px] bg-gray-900 border border-gray-700/50 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-gray-800 group-hover:to-gray-700">
@@ -249,8 +304,7 @@ const profile = {
               {/* Floating badges */}
               <div className="hidden lg:block absolute left-[5.5rem] top-[2.3rem] animate-float-slow">
                 <div className="px-4 py-2 rounded-lg bg-purple-500/10 backdrop-blur-sm border border-purple-500/20 text-purple-400">
-                  <i className="fas fa-wand-magic-sparkles"></i>&nbsp;&nbsp;UI
-                  Magic
+                  <i className="fas fa-wand-magic-sparkles"></i>&nbsp;&nbsp;Kali Linux 
                 </div>
               </div>
               <div className="hidden lg:block absolute right-10 top-20 animate-float">
