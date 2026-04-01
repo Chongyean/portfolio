@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Code2, Layers, Figma } from "lucide-react";
+
+const TITLE_GLITCH_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
 
 const ExperienceCard = ({
   title,
@@ -64,6 +66,7 @@ const ExperienceCard = ({
 );
 
 const ExperienceSection = () => {
+  const experienceTitle = "Professional Journey";
   const particles = useMemo(
     () =>
       Array.from({ length: 20 }, () => ({
@@ -73,6 +76,56 @@ const ExperienceSection = () => {
       })),
     []
   );
+  const [decodedTitle, setDecodedTitle] = useState(() =>
+    experienceTitle
+      .split("")
+      .map((character) =>
+        character === " "
+          ? " "
+          : TITLE_GLITCH_CHARS[Math.floor(Math.random() * TITLE_GLITCH_CHARS.length)]
+      )
+      .join("")
+  );
+
+  useEffect(() => {
+    const totalDuration = 2000;
+    const stepDuration = 60;
+    const totalSteps = Math.ceil(totalDuration / stepDuration);
+    let stepIndex = 0;
+
+    const intervalId = setInterval(() => {
+      stepIndex += 1;
+
+      const revealCount = Math.min(
+        experienceTitle.length,
+        Math.floor((stepIndex / totalSteps) * experienceTitle.length)
+      );
+
+      const nextTitle = experienceTitle
+        .split("")
+        .map((character, index) => {
+          if (character === " ") {
+            return " ";
+          }
+
+          if (index < revealCount) {
+            return character;
+          }
+
+          return TITLE_GLITCH_CHARS[Math.floor(Math.random() * TITLE_GLITCH_CHARS.length)];
+        })
+        .join("");
+
+      setDecodedTitle(nextTitle);
+
+      if (stepIndex >= totalSteps) {
+        clearInterval(intervalId);
+        setDecodedTitle(experienceTitle);
+      }
+    }, stepDuration);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const experiences = [
     {
@@ -137,7 +190,7 @@ const ExperienceSection = () => {
           >
             <div className="relative">
               <h2 className="text-5xl md:text-7xl font-black text-transparent bg-gradient-to-r from-teal-400 to-blue-500 bg-clip-text text-center">
-                Professional Journey
+                {decodedTitle}
               </h2>
               <div className="absolute inset-0 -z-10 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur-3xl rounded-full" />
             </div>

@@ -6,7 +6,6 @@ import {
   BookOpen,
   GraduationCap,
   Trophy,
-  Binary,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import PropTypes from "prop-types";
@@ -15,6 +14,8 @@ import salaCyberIcon from "../../assets/images/salaCyber_icon.jpg";
 import hackerIcon from "../../assets/images/hacker_icon.jpg";
 import instinctIcon from "../../assets/images/instinct_icon.jpg";
 import ruppLogo from "../../assets/images/rupp_logo.png";
+
+const TITLE_GLITCH_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
 
 // Floating Enchanted Particles Component
 const EnchantedParticles = ({ count = 20 }) => {
@@ -53,23 +54,20 @@ EnchantedParticles.propTypes = {
   count: PropTypes.number,
 };
 
-// Hacker Glyph Component
-const HackerGlyph = () => {
-  return (
-    <motion.span
-      initial={{ opacity: 0, scale: 0 }}
-      animate={{ opacity: [0, 1, 0], scale: [0, 1, 0] }}
-      transition={{ duration: 0.8, repeat: Infinity, repeatDelay: 0.3 }}
-      className="inline-block"
-    >
-      <Binary size={20} className="text-emerald-300" />
-    </motion.span>
-  );
-};
-
 const EducationSection = () => {
+  const educationTitle = "Educational Journey";
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [salaCyberPhase, setSalaCyberPhase] = useState("idle");
+  const [decodedTitle, setDecodedTitle] = useState(() =>
+    educationTitle
+      .split("")
+      .map((character) =>
+        character === " "
+          ? " "
+          : TITLE_GLITCH_CHARS[Math.floor(Math.random() * TITLE_GLITCH_CHARS.length)]
+      )
+      .join("")
+  );
   const salaCyberTimerRef = useRef(null);
 
   useEffect(() => {
@@ -78,6 +76,46 @@ const EducationSection = () => {
         clearTimeout(salaCyberTimerRef.current);
       }
     };
+  }, []);
+
+  useEffect(() => {
+    const totalDuration = 2000;
+    const stepDuration = 60;
+    const totalSteps = Math.ceil(totalDuration / stepDuration);
+    let stepIndex = 0;
+
+    const intervalId = setInterval(() => {
+      stepIndex += 1;
+
+      const revealCount = Math.min(
+        educationTitle.length,
+        Math.floor((stepIndex / totalSteps) * educationTitle.length)
+      );
+
+      const nextTitle = educationTitle
+        .split("")
+        .map((character, index) => {
+          if (character === " ") {
+            return " ";
+          }
+
+          if (index < revealCount) {
+            return character;
+          }
+
+          return TITLE_GLITCH_CHARS[Math.floor(Math.random() * TITLE_GLITCH_CHARS.length)];
+        })
+        .join("");
+
+      setDecodedTitle(nextTitle);
+
+      if (stepIndex >= totalSteps) {
+        clearInterval(intervalId);
+        setDecodedTitle(educationTitle);
+      }
+    }, stepDuration);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const startSalaCyberHover = (index, school) => {
@@ -243,11 +281,9 @@ const EducationSection = () => {
           className="text-center mb-16"
         >
           <div className="flex justify-center items-center gap-3 mb-6">
-            <HackerGlyph />
             <h2 className="text-4xl md:text-5xl font-bold font-mono tracking-[0.14em] uppercase bg-gradient-to-r from-emerald-300 via-lime-300 to-cyan-300 bg-clip-text text-transparent mb-0 drop-shadow-[0_0_14px_rgba(52,211,153,0.6)]">
-              Educational Journey
+              {decodedTitle}
             </h2>
-            <HackerGlyph />
           </div>
           <motion.p
             initial={{ opacity: 0 }}

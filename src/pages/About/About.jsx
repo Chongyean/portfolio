@@ -20,6 +20,10 @@ const HACKER_NOISE_LINES = [
   "kernel://thread[13] panic! stack=0x0000DEADC0DE",
   "[SIGINT] [SIGSEGV] [SIGKILL] // unreadable_stream",
 ];
+const NAME_SOURCE_TEXT = "Chongyean Taing";
+const NAME_DECODE_TARGET = "Penetration Tester";
+const NAME_GLITCH_TARGET = "Hacker";
+const NAME_GLITCH_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
 
 export default function About() {
   const imageTriggerRef = useRef(null);
@@ -28,10 +32,132 @@ export default function About() {
   const sequenceTimeoutsRef = useRef([]);
   const hasBackgroundGlitchedRef = useRef(false);
   const isSequenceRunningRef = useRef(false);
+  const nameDecodeIntervalRef = useRef(null);
+  const nameGlitchIntervalRef = useRef(null);
+  const nameResetTimeoutRef = useRef(null);
   const [isImageGlitching, setIsImageGlitching] = useState(false);
   const [isBackgroundGlitching, setIsBackgroundGlitching] = useState(false);
   const [showHackerImage, setShowHackerImage] = useState(false);
   const [glitchFrameIndex, setGlitchFrameIndex] = useState(0);
+  const [interactiveName, setInteractiveName] = useState(NAME_SOURCE_TEXT);
+  const [nameState, setNameState] = useState("idle");
+
+  useEffect(() => {
+    return () => {
+      if (nameDecodeIntervalRef.current) {
+        clearInterval(nameDecodeIntervalRef.current);
+        nameDecodeIntervalRef.current = null;
+      }
+
+      if (nameGlitchIntervalRef.current) {
+        clearInterval(nameGlitchIntervalRef.current);
+        nameGlitchIntervalRef.current = null;
+      }
+
+      if (nameResetTimeoutRef.current) {
+        clearTimeout(nameResetTimeoutRef.current);
+        nameResetTimeoutRef.current = null;
+      }
+    };
+  }, []);
+
+  const startDecodeName = () => {
+    if (nameState !== "idle") {
+      return;
+    }
+
+    if (nameGlitchIntervalRef.current) {
+      clearInterval(nameGlitchIntervalRef.current);
+      nameGlitchIntervalRef.current = null;
+    }
+
+    if (nameResetTimeoutRef.current) {
+      clearTimeout(nameResetTimeoutRef.current);
+      nameResetTimeoutRef.current = null;
+    }
+
+    const target = NAME_DECODE_TARGET;
+    const totalSteps = 24;
+    let step = 0;
+
+    setNameState("decoding");
+
+    nameDecodeIntervalRef.current = setInterval(() => {
+      step += 1;
+      const revealCount = Math.floor((step / totalSteps) * target.length);
+
+      const nextValue = target
+        .split("")
+        .map((character, index) => {
+          if (character === " ") {
+            return " ";
+          }
+
+          if (index < revealCount) {
+            return character;
+          }
+
+          return NAME_GLITCH_CHARS[Math.floor(Math.random() * NAME_GLITCH_CHARS.length)];
+        })
+        .join("");
+
+      setInteractiveName(nextValue);
+
+      if (step >= totalSteps) {
+        clearInterval(nameDecodeIntervalRef.current);
+        nameDecodeIntervalRef.current = null;
+        setInteractiveName(NAME_DECODE_TARGET);
+        setNameState("decoded");
+      }
+    }, 42);
+  };
+
+  const startGlitchToHacker = () => {
+    if (nameState !== "decoded") {
+      return;
+    }
+
+    if (nameDecodeIntervalRef.current) {
+      clearInterval(nameDecodeIntervalRef.current);
+      nameDecodeIntervalRef.current = null;
+    }
+
+    const target = NAME_GLITCH_TARGET;
+    let frame = 0;
+    const totalFrames = 15;
+
+    setNameState("glitching");
+
+    nameGlitchIntervalRef.current = setInterval(() => {
+      frame += 1;
+      const revealCount = Math.floor((frame / totalFrames) * target.length);
+
+      const nextValue = target
+        .split("")
+        .map((character, index) => {
+          if (index < revealCount) {
+            return character;
+          }
+
+          return NAME_GLITCH_CHARS[Math.floor(Math.random() * NAME_GLITCH_CHARS.length)];
+        })
+        .join("");
+
+      setInteractiveName(nextValue);
+
+      if (frame >= totalFrames) {
+        clearInterval(nameGlitchIntervalRef.current);
+        nameGlitchIntervalRef.current = null;
+        setInteractiveName(NAME_GLITCH_TARGET);
+
+        nameResetTimeoutRef.current = setTimeout(() => {
+          setInteractiveName(NAME_SOURCE_TEXT);
+          setNameState("idle");
+          nameResetTimeoutRef.current = null;
+        }, 1100);
+      }
+    }, 45);
+  };
 
   useEffect(() => {
     const target = imageTriggerRef.current;
@@ -280,6 +406,17 @@ export default function About() {
           .about-bg-glitch {
             animation: aboutBackgroundGlitch 0.14s steps(2, end) infinite;
           }
+
+          @keyframes nameTextGlitch {
+            0%, 100% { transform: translate(0, 0); text-shadow: 0 0 0 rgba(74, 222, 128, 0), 0 0 0 rgba(239, 68, 68, 0); }
+            22% { transform: translate(1px, 0); text-shadow: -1px 0 rgba(74, 222, 128, 0.9), 1px 0 rgba(239, 68, 68, 0.8); }
+            49% { transform: translate(-1px, 0); text-shadow: 1px 0 rgba(74, 222, 128, 0.9), -1px 0 rgba(239, 68, 68, 0.8); }
+            76% { transform: translate(1px, 0); text-shadow: 0 0 10px rgba(74, 222, 128, 0.8), 0 0 14px rgba(239, 68, 68, 0.7); }
+          }
+
+          .name-glitch {
+            animation: nameTextGlitch 0.16s steps(2, end) infinite;
+          }
         `}</style>
 
         {isBackgroundGlitching && (
@@ -374,7 +511,7 @@ export default function About() {
                       I find what others miss.
                     </span>
                     <br />
-                    I'm Chongyean Taing, a passionate IT student at the Royal University of Phnom Penh 
+                    I&apos;m Chongyean Taing, a passionate IT student at the Royal University of Phnom Penh 
                     majoring in Information Technology Engineering.{" "}
                     <span className="inline-block bg-gradient-to-r from-emerald-300 via-red-400 to-lime-300 bg-clip-text font-extrabold text-transparent drop-shadow-[0_0_8px_rgba(34,197,94,0.7)] transition duration-500 hover:drop-shadow-[0_0_16px_rgba(239,68,68,0.65)] animate-pulse [animation-duration:2.2s]">
                       As Penetration Tester with a Red Team mindset
@@ -397,14 +534,40 @@ export default function About() {
               <div className="pt-6">
                 <blockquote className="border-l-4 border-gray-300 pl-4">
                   <p className="text-white">
-                    I'm a lifelong learner and innovator, driven by a desire to
+                    I&apos;m a lifelong learner and innovator, driven by a desire to
 
                     contribute to the developer community and Hacking flow.
                   </p>
 
                   <div className="mt-6 space-y-3">
                     <cite className="block font-medium text-white">
-                      Taing Chongyean, Creator of y34n
+                      <button
+                        type="button"
+                        onMouseEnter={startDecodeName}
+                        onClick={startGlitchToHacker}
+                        className="relative inline-flex items-center font-medium tracking-wide text-cyan-200 transition-colors duration-300 hover:text-emerald-300"
+                      >
+                        <span className={`relative z-10 ${nameState === "glitching" ? "name-glitch" : ""}`}>
+                          {interactiveName}
+                        </span>
+                        {nameState === "glitching" && (
+                          <>
+                            <span
+                              aria-hidden="true"
+                              className="name-glitch pointer-events-none absolute left-[1px] top-0 z-0 opacity-65 text-emerald-300"
+                            >
+                              {interactiveName}
+                            </span>
+                            <span
+                              aria-hidden="true"
+                              className="name-glitch pointer-events-none absolute -left-[1px] top-0 z-0 opacity-65 text-red-400"
+                            >
+                              {interactiveName}
+                            </span>
+                          </>
+                        )}
+                      </button>
+                      <span className="text-white">, Creator of y34n</span>
                     </cite>
                     <div className="flex items-center gap-2">
                       <img

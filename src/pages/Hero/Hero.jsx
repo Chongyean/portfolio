@@ -43,12 +43,17 @@ const GridBackground = () => {
 export default function Hero() {
   const certifiedLabel = "Certified";
   const glitchCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
+  const nameSourceText = "Taing Chongyean";
+  const nameDecodeTarget = "y34n";
+  const nameGlitchTarget = "Hacker 404";
+  const nameGlitchChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
 
   const words = [
     "Penetration Tester",
-    "Web Application Hacker",
+    "Web Application Hacking",
     "Software Engineer",
-    "CVE Hunter",
+    "Cybersecurity Researcher",
+    "ExploitDB",
     "League of Legends Mid Laner",
   ];
 
@@ -56,14 +61,25 @@ export default function Hero() {
     "Penetration Tester ",
     "Red Team Practitioner",
     "Coding the future",
+    "Ethical Hacker",
+    "AI Enthusiast",
   ];
 
   const [summaryIndex, setSummaryIndex] = useState(0);
   const [isSummaryRolling, setIsSummaryRolling] = useState(false);
   const [contactButtonLabel, setContactButtonLabel] = useState("LinkedIn");
   const [isContactAnimating, setIsContactAnimating] = useState(false);
+  const [isDoneGlitching, setIsDoneGlitching] = useState(false);
+  const [interactiveName, setInteractiveName] = useState(nameSourceText);
+  const [nameState, setNameState] = useState("idle");
   const contactIntervalRef = useRef(null);
   const contactTimeoutRef = useRef(null);
+  const redirectTimeoutRef = useRef(null);
+  const nameDecodeIntervalRef = useRef(null);
+  const nameGlitchIntervalRef = useRef(null);
+  const namePhaseTimeoutRef = useRef(null);
+  const nameLandingTimeoutRef = useRef(null);
+  const nameSequenceStartedRef = useRef(false);
 
   const [code] = useState(`
 const profile = {
@@ -108,6 +124,112 @@ const profile = {
       @keyframes dotPulse {
         0%, 100% { opacity: 0.2; transform: scale(0.8); }
         50% { opacity: 0.5; transform: scale(1.2); }
+      }
+
+      @keyframes doneGlitch {
+        0%, 100% { transform: translate(0, 0); text-shadow: 0 0 0 rgba(34, 197, 94, 0), 0 0 0 rgba(239, 68, 68, 0); }
+        25% { transform: translate(1px, 0); text-shadow: -1px 0 rgba(34, 197, 94, 0.95), 1px 0 rgba(239, 68, 68, 0.85); }
+        50% { transform: translate(-1px, 0); text-shadow: 1px 0 rgba(34, 197, 94, 0.95), -1px 0 rgba(239, 68, 68, 0.85); }
+        75% { transform: translate(1px, 0); text-shadow: 0 0 10px rgba(34, 197, 94, 0.9), 0 0 12px rgba(239, 68, 68, 0.8); }
+      }
+
+      .done-glitch {
+        animation: doneGlitch 0.16s steps(2, end) infinite;
+      }
+
+      @keyframes cutBoxGlitch {
+        0%, 100% {
+          clip-path: inset(0 0 0 0);
+          box-shadow: 0 0 0 rgba(34, 197, 94, 0);
+          transform: translate(0, 0);
+        }
+        25% {
+          clip-path: inset(0 0 46% 0);
+          box-shadow: 0 0 14px rgba(34, 197, 94, 0.65);
+          transform: translate(1px, 0);
+        }
+        50% {
+          clip-path: inset(34% 0 18% 0);
+          box-shadow: 0 0 14px rgba(239, 68, 68, 0.65);
+          transform: translate(-1px, 0);
+        }
+        75% {
+          clip-path: inset(62% 0 0 0);
+          box-shadow: 0 0 16px rgba(34, 197, 94, 0.75), 0 0 20px rgba(239, 68, 68, 0.55);
+          transform: translate(1px, 0);
+        }
+      }
+
+      .cut-box-animate {
+        animation: cutBoxGlitch 0.2s steps(2, end) infinite;
+      }
+
+      @keyframes slicePieceTop {
+        0% { opacity: 0.9; transform: translate(0, 0) rotate(0deg); }
+        100% { opacity: 0; transform: translate(-22px, -10px) rotate(-8deg); }
+      }
+
+      @keyframes slicePieceMid {
+        0% { opacity: 0.85; transform: translate(0, 0) rotate(0deg); }
+        100% { opacity: 0; transform: translate(18px, 3px) rotate(6deg); }
+      }
+
+      @keyframes slicePieceBottom {
+        0% { opacity: 0.9; transform: translate(0, 0) rotate(0deg); }
+        100% { opacity: 0; transform: translate(-14px, 12px) rotate(-7deg); }
+      }
+
+      .slice-piece {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, rgba(34, 197, 94, 0.35), rgba(239, 68, 68, 0.35));
+        mix-blend-mode: screen;
+        pointer-events: none;
+      }
+
+      .slice-piece-top {
+        clip-path: inset(0 0 67% 0);
+        animation: slicePieceTop 0.7s ease-out forwards;
+      }
+
+      .slice-piece-mid {
+        clip-path: inset(33% 0 33% 0);
+        animation: slicePieceMid 0.7s ease-out forwards;
+      }
+
+      .slice-piece-bottom {
+        clip-path: inset(67% 0 0 0);
+        animation: slicePieceBottom 0.7s ease-out forwards;
+      }
+
+      @keyframes heroNameGlitch {
+        0%, 100% { transform: translate(0, 0); text-shadow: 0 0 0 rgba(74, 222, 128, 0), 0 0 0 rgba(239, 68, 68, 0); }
+        25% { transform: translate(1px, 0); text-shadow: -1px 0 rgba(74, 222, 128, 0.9), 1px 0 rgba(239, 68, 68, 0.8); }
+        50% { transform: translate(-1px, 0); text-shadow: 1px 0 rgba(74, 222, 128, 0.9), -1px 0 rgba(239, 68, 68, 0.8); }
+        75% { transform: translate(1px, 0); text-shadow: 0 0 10px rgba(74, 222, 128, 0.8), 0 0 14px rgba(239, 68, 68, 0.7); }
+      }
+
+      .hero-name-glitch {
+        animation: heroNameGlitch 0.16s steps(2, end) infinite;
+      }
+
+      .summary-stack {
+        will-change: transform, opacity, filter;
+        transition-property: transform, opacity, filter;
+        transition-duration: 1200ms;
+        transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .summary-stack-item {
+        transition: opacity 1200ms cubic-bezier(0.16, 1, 0.3, 1), transform 1200ms cubic-bezier(0.16, 1, 0.3, 1), filter 1200ms cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .summary-stack-item-active {
+        filter: blur(0);
+      }
+
+      .summary-stack-item-muted {
+        filter: blur(0.35px);
       }
       
       /* Media query for 1366x768 resolution */
@@ -162,8 +284,8 @@ const profile = {
       setTimeout(() => {
         setSummaryIndex((prev) => (prev + 1) % summaryWords.length);
         setIsSummaryRolling(false);
-      }, 620);
-    }, 3000);
+      }, 850);
+    }, 3400);
 
     return () => clearInterval(intervalId);
   }, [summaryWords.length]);
@@ -176,6 +298,200 @@ const profile = {
 
       if (contactTimeoutRef.current) {
         clearTimeout(contactTimeoutRef.current);
+      }
+
+      if (redirectTimeoutRef.current) {
+        clearTimeout(redirectTimeoutRef.current);
+      }
+
+      if (nameDecodeIntervalRef.current) {
+        clearInterval(nameDecodeIntervalRef.current);
+      }
+
+      if (nameGlitchIntervalRef.current) {
+        clearInterval(nameGlitchIntervalRef.current);
+      }
+
+      if (namePhaseTimeoutRef.current) {
+        clearTimeout(namePhaseTimeoutRef.current);
+      }
+
+      if (nameLandingTimeoutRef.current) {
+        clearTimeout(nameLandingTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const resetNameAnimation = () => {
+    if (nameDecodeIntervalRef.current) {
+      clearInterval(nameDecodeIntervalRef.current);
+      nameDecodeIntervalRef.current = null;
+    }
+
+    if (nameGlitchIntervalRef.current) {
+      clearInterval(nameGlitchIntervalRef.current);
+      nameGlitchIntervalRef.current = null;
+    }
+
+    if (namePhaseTimeoutRef.current) {
+      clearTimeout(namePhaseTimeoutRef.current);
+      namePhaseTimeoutRef.current = null;
+    }
+
+    setInteractiveName(nameSourceText);
+    setNameState("idle");
+  };
+
+  const startReturnGlitchToNormal = () => {
+    const target = nameSourceText;
+    let frame = 0;
+    const totalFrames = 10;
+
+    setNameState("returning");
+
+    nameGlitchIntervalRef.current = setInterval(() => {
+      frame += 1;
+      const revealCount = Math.floor((frame / totalFrames) * target.length);
+
+      const nextValue = target
+        .split("")
+        .map((character, index) => {
+          if (character === " ") {
+            return " ";
+          }
+
+          if (index < revealCount) {
+            return character;
+          }
+
+          return nameGlitchChars[Math.floor(Math.random() * nameGlitchChars.length)];
+        })
+        .join("");
+
+      setInteractiveName(nextValue);
+
+      if (frame >= totalFrames) {
+        clearInterval(nameGlitchIntervalRef.current);
+        nameGlitchIntervalRef.current = null;
+        setInteractiveName(nameSourceText);
+        setNameState("idle");
+      }
+    }, 50);
+  };
+
+  const startNameErrorGlitch = () => {
+    const target = nameGlitchTarget;
+    let frame = 0;
+    const totalFrames = 10;
+
+    setNameState("glitching");
+
+    nameGlitchIntervalRef.current = setInterval(() => {
+      frame += 1;
+      const revealCount = Math.floor((frame / totalFrames) * target.length);
+
+      const nextValue = target
+        .split("")
+        .map((character, index) => {
+          if (character === " ") {
+            return " ";
+          }
+
+          if (index < revealCount) {
+            return character;
+          }
+
+          return nameGlitchChars[Math.floor(Math.random() * nameGlitchChars.length)];
+        })
+        .join("");
+
+      setInteractiveName(nextValue);
+
+      if (frame >= totalFrames) {
+        clearInterval(nameGlitchIntervalRef.current);
+        nameGlitchIntervalRef.current = null;
+        setInteractiveName(nameGlitchTarget);
+
+        namePhaseTimeoutRef.current = setTimeout(() => {
+          startReturnGlitchToNormal();
+          namePhaseTimeoutRef.current = null;
+        }, 120);
+      }
+    }, 50);
+  };
+
+  const handleNameHoverDecode = () => {
+    if (nameState !== "idle") {
+      return;
+    }
+
+    const target = nameDecodeTarget;
+    const totalSteps = 16;
+    let step = 0;
+    let freezeTriggered = false;
+
+    setNameState("decoding");
+
+    nameDecodeIntervalRef.current = setInterval(() => {
+      step += 1;
+      const revealCount = Math.floor((step / totalSteps) * target.length);
+
+      const nextValue = target
+        .split("")
+        .map((character, index) => {
+          if (character === " ") {
+            return " ";
+          }
+
+          if (index < revealCount) {
+            return character;
+          }
+
+          return nameGlitchChars[Math.floor(Math.random() * nameGlitchChars.length)];
+        })
+        .join("");
+
+      setInteractiveName(nextValue);
+
+      if (!freezeTriggered && step >= totalSteps - 2) {
+        freezeTriggered = true;
+        clearInterval(nameDecodeIntervalRef.current);
+        nameDecodeIntervalRef.current = null;
+        setInteractiveName(nameDecodeTarget);
+        setNameState("freeze");
+
+        namePhaseTimeoutRef.current = setTimeout(() => {
+          startNameErrorGlitch();
+          namePhaseTimeoutRef.current = null;
+        }, 850);
+        return;
+      }
+
+      if (step >= totalSteps) {
+        clearInterval(nameDecodeIntervalRef.current);
+        nameDecodeIntervalRef.current = null;
+        setInteractiveName(nameDecodeTarget);
+        startNameErrorGlitch();
+      }
+    }, 38);
+  };
+
+  useEffect(() => {
+    if (nameSequenceStartedRef.current) {
+      return undefined;
+    }
+
+    nameSequenceStartedRef.current = true;
+
+    nameLandingTimeoutRef.current = setTimeout(() => {
+      handleNameHoverDecode();
+      nameLandingTimeoutRef.current = null;
+    }, 4000);
+
+    return () => {
+      if (nameLandingTimeoutRef.current) {
+        clearTimeout(nameLandingTimeoutRef.current);
+        nameLandingTimeoutRef.current = null;
       }
     };
   }, []);
@@ -203,6 +519,12 @@ const profile = {
     if (contactTimeoutRef.current) {
       clearTimeout(contactTimeoutRef.current);
     }
+
+    if (redirectTimeoutRef.current) {
+      clearTimeout(redirectTimeoutRef.current);
+    }
+
+    setIsDoneGlitching(false);
 
     contactIntervalRef.current = setInterval(() => {
       stepIndex += 1;
@@ -241,8 +563,12 @@ const profile = {
         contactIntervalRef.current = null;
       }
 
-      setContactButtonLabel(certifiedLabel);
-      window.location.href = "/education#certified";
+      setContactButtonLabel("Exploit Success");
+      setIsDoneGlitching(true);
+
+      redirectTimeoutRef.current = setTimeout(() => {
+        window.location.href = "/education";
+      }, 950);
     }, totalDuration);
   };
 
@@ -307,9 +633,13 @@ const profile = {
                   <SparklesText text="Hello" />
                   <span className="relative inline-block">
                     I&apos;m
-                    <span className="typing-effect gradient-text">
+                    <span
+                      className={`typing-effect gradient-text select-none ${
+                        nameState === "glitching" ? "hero-name-glitch" : ""
+                      }`}
+                    >
                       {" "}
-                      Taing Chongyean
+                      {interactiveName}
                     </span>
                   </span>
                 </h1>
@@ -334,22 +664,42 @@ const profile = {
                     <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-b from-[#020617] via-transparent to-[#020617]" />
                     <div className="pointer-events-none absolute left-0 right-0 top-1/2 z-10 h-7 -translate-y-1/2 rounded-md bg-slate-300/5" />
                     <div
-                      className={`flex flex-col ${
+                      className={`summary-stack flex flex-col ${
                         isSummaryRolling
-                          ? "-translate-y-7"
-                          : "translate-y-0"
-                      } transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]`}
+                          ? "-translate-y-[1.75rem] scale-100 opacity-100"
+                          : "translate-y-0 scale-100 opacity-100"
+                      }`}
                     >
-                      <span className="h-7 leading-7 text-white/50 text-center">
+                      <span
+                        className={`summary-stack-item h-7 leading-7 text-white/50 text-center ${
+                          isSummaryRolling ? "summary-stack-item-muted" : ""
+                        }`}
+                        style={{ transitionDelay: "0ms" }}
+                      >
                         {previousSummaryWord}
                       </span>
-                      <span className="h-7 leading-7 font-semibold text-white text-center">
+                      <span
+                        className={`summary-stack-item h-7 leading-7 font-semibold text-white text-center ${
+                          isSummaryRolling ? "summary-stack-item-active" : ""
+                        }`}
+                        style={{ transitionDelay: "90ms" }}
+                      >
                         {currentSummaryWord}
                       </span>
-                      <span className="h-7 leading-7 text-white/50 text-center">
+                      <span
+                        className={`summary-stack-item h-7 leading-7 text-white/50 text-center ${
+                          isSummaryRolling ? "summary-stack-item-active" : ""
+                        }`}
+                        style={{ transitionDelay: "180ms" }}
+                      >
                         {nextSummaryWord}
                       </span>
-                      <span className="h-7 leading-7 text-white/50 text-center">
+                      <span
+                        className={`summary-stack-item h-7 leading-7 text-white/50 text-center ${
+                          isSummaryRolling ? "summary-stack-item-muted" : ""
+                        }`}
+                        style={{ transitionDelay: "270ms" }}
+                      >
                         {afterNextSummaryWord}
                       </span>
                     </div>
@@ -374,15 +724,23 @@ const profile = {
 
                 {/* Contact Button */}
                 <a
-                  href="/education#certified"
+                  href="/education"
                   onClick={handleCertifiedClick}
                   className="group relative inline-flex items-center justify-center gap-3 p-0.5 rounded-xl bg-gradient-to-r from-gray-800 to-gray-700 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_2rem_-0.5rem_#60A5FA]"
                 >
-                  <span className="block w-full px-6 sm:px-8 py-3 sm:py-4 rounded-[11px] bg-gray-900 border border-gray-700/50 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-gray-800 group-hover:to-gray-700">
+                  <span className={`block w-full px-6 sm:px-8 py-3 sm:py-4 rounded-[11px] bg-gray-900 border border-gray-700/50 transition-all duration-300 group-hover:bg-gradient-to-r group-hover:from-gray-800 group-hover:to-gray-700 ${isDoneGlitching ? "cut-box-animate border-emerald-400/80" : ""}`}>
                     <span className="relative flex items-center justify-center gap-2 text-gray-300 font-medium group-hover:text-white">
-                      <span>{contactButtonLabel}</span>
+                      <span className={isDoneGlitching ? "done-glitch text-emerald-300" : ""}>{contactButtonLabel}</span>
                       <i className="fas fa-envelope transform transition-all duration-300 group-hover:rotate-12"></i>
                     </span>
+
+                    {isDoneGlitching && (
+                      <>
+                        <span className="slice-piece slice-piece-top" aria-hidden="true" />
+                        <span className="slice-piece slice-piece-mid" aria-hidden="true" />
+                        <span className="slice-piece slice-piece-bottom" aria-hidden="true" />
+                      </>
+                    )}
                   </span>
                 </a>
               </div>
