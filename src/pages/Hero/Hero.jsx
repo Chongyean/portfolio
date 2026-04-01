@@ -6,6 +6,7 @@ import Meteors from "@/components/ui/meteors";
 import PortfolioPage from "@/pages/About/About";
 import SparklesText from "@/components/ui/sparkles-text";
 import { FlipWords } from "@/components/ui/flip-words";
+import GlitchText from "@/components/ui/GlitchText";
 
 // Grid Background - Replacing the HexagonBackground
 const GridBackground = () => {
@@ -79,6 +80,8 @@ export default function Hero() {
   const nameGlitchIntervalRef = useRef(null);
   const namePhaseTimeoutRef = useRef(null);
   const nameLandingTimeoutRef = useRef(null);
+  const summaryRotateStartTimeoutRef = useRef(null);
+  const summaryRotateCommitTimeoutRef = useRef(null);
   const nameSequenceStartedRef = useRef(false);
 
   const [code] = useState(`
@@ -215,6 +218,9 @@ const profile = {
 
       .summary-stack {
         will-change: transform, opacity, filter;
+      }
+
+      .summary-stack-rolling {
         transition-property: transform, opacity, filter;
         transition-duration: 1200ms;
         transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
@@ -278,19 +284,6 @@ const profile = {
   }, [code]);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setIsSummaryRolling(true);
-
-      setTimeout(() => {
-        setSummaryIndex((prev) => (prev + 1) % summaryWords.length);
-        setIsSummaryRolling(false);
-      }, 850);
-    }, 3400);
-
-    return () => clearInterval(intervalId);
-  }, [summaryWords.length]);
-
-  useEffect(() => {
     return () => {
       if (contactIntervalRef.current) {
         clearInterval(contactIntervalRef.current);
@@ -318,6 +311,14 @@ const profile = {
 
       if (nameLandingTimeoutRef.current) {
         clearTimeout(nameLandingTimeoutRef.current);
+      }
+
+      if (summaryRotateStartTimeoutRef.current) {
+        clearTimeout(summaryRotateStartTimeoutRef.current);
+      }
+
+      if (summaryRotateCommitTimeoutRef.current) {
+        clearTimeout(summaryRotateCommitTimeoutRef.current);
       }
     };
   }, []);
@@ -665,43 +666,77 @@ const profile = {
                     <div className="pointer-events-none absolute left-0 right-0 top-1/2 z-10 h-7 -translate-y-1/2 rounded-md bg-slate-300/5" />
                     <div
                       className={`summary-stack flex flex-col ${
+                        isSummaryRolling ? "summary-stack-rolling" : ""
+                      } ${
                         isSummaryRolling
                           ? "-translate-y-[1.75rem] scale-100 opacity-100"
                           : "translate-y-0 scale-100 opacity-100"
                       }`}
                     >
-                      <span
-                        className={`summary-stack-item h-7 leading-7 text-white/50 text-center ${
-                          isSummaryRolling ? "summary-stack-item-muted" : ""
-                        }`}
+                      <GlitchText
+                        key={`prev-${previousSummaryWord}`}
+                        speed={1}
+                        active={false}
+                        enableShadows
+                        enableOnHover={false}
+                        encryptedWhenIdle
+                        className="summary-stack-item h-7 leading-7 font-semibold text-white/50 text-center summary-stack-item-muted"
                         style={{ transitionDelay: "0ms" }}
                       >
                         {previousSummaryWord}
-                      </span>
-                      <span
-                        className={`summary-stack-item h-7 leading-7 font-semibold text-white text-center ${
-                          isSummaryRolling ? "summary-stack-item-active" : ""
-                        }`}
+                      </GlitchText>
+                      <GlitchText
+                        key={`current-${currentSummaryWord}`}
+                        speed={1}
+                        active
+                        enableShadows
+                        enableOnHover={false}
+                        encryptedWhenIdle
+                        onGlitchComplete={() => {
+                          if (isSummaryRolling || summaryRotateStartTimeoutRef.current || summaryRotateCommitTimeoutRef.current) {
+                            return;
+                          }
+
+                          summaryRotateStartTimeoutRef.current = setTimeout(() => {
+                            setIsSummaryRolling(true);
+                            summaryRotateStartTimeoutRef.current = null;
+
+                            summaryRotateCommitTimeoutRef.current = setTimeout(() => {
+                              setSummaryIndex((prev) => (prev + 1) % summaryWords.length);
+                              setIsSummaryRolling(false);
+                              summaryRotateCommitTimeoutRef.current = null;
+                            }, 850);
+                          }, 500);
+                        }}
+                        className="summary-stack-item h-7 leading-7 font-semibold text-white text-center summary-stack-item-active"
                         style={{ transitionDelay: "90ms" }}
                       >
                         {currentSummaryWord}
-                      </span>
-                      <span
-                        className={`summary-stack-item h-7 leading-7 text-white/50 text-center ${
-                          isSummaryRolling ? "summary-stack-item-active" : ""
-                        }`}
+                      </GlitchText>
+                      <GlitchText
+                        key={`next-${nextSummaryWord}`}
+                        speed={1}
+                        active={false}
+                        enableShadows
+                        enableOnHover={false}
+                        encryptedWhenIdle
+                        className="summary-stack-item h-7 leading-7 font-semibold text-white/50 text-center summary-stack-item-muted"
                         style={{ transitionDelay: "180ms" }}
                       >
                         {nextSummaryWord}
-                      </span>
-                      <span
-                        className={`summary-stack-item h-7 leading-7 text-white/50 text-center ${
-                          isSummaryRolling ? "summary-stack-item-muted" : ""
-                        }`}
+                      </GlitchText>
+                      <GlitchText
+                        key={`after-${afterNextSummaryWord}`}
+                        speed={1}
+                        active={false}
+                        enableShadows
+                        enableOnHover={false}
+                        encryptedWhenIdle
+                        className="summary-stack-item h-7 leading-7 font-semibold text-white/50 text-center summary-stack-item-muted"
                         style={{ transitionDelay: "270ms" }}
                       >
                         {afterNextSummaryWord}
-                      </span>
+                      </GlitchText>
                     </div>
                   </div>
                 </div>

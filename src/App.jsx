@@ -19,27 +19,29 @@ export default function App() {
     <>
       <SmoothScrollController />
       <Header />
-      {/* Conditional Rendering */}
-      {isOnePage ? (
-        // One-Page Mode: Render all components together
-        <>
-          <Hero />
-          <Skills />
-          <Experience />
-          <Education />
-          <Contact />
-        </>
-      ) : (
-        // Router Mode: Use routes for navigation
-        <Routes>
-          <Route path="/" element={<Hero />} />
-          <Route path="/skills" element={<Skills />} />
-          <Route path="/experience" element={<Experience />} />
-          <Route path="/education" element={<Education />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/projects" element={<Projects />} />
-        </Routes>
-      )}
+      <main>
+        {/* Conditional Rendering */}
+        {isOnePage ? (
+          // One-Page Mode: Render all components together
+          <>
+            <Hero />
+            <Skills />
+            <Experience />
+            <Education />
+            <Contact />
+          </>
+        ) : (
+          // Router Mode: Use routes for navigation
+          <Routes>
+            <Route path="/" element={<Hero />} />
+            <Route path="/skills" element={<Skills />} />
+            <Route path="/experience" element={<Experience />} />
+            <Route path="/education" element={<Education />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/projects" element={<Projects />} />
+          </Routes>
+        )}
+      </main>
       <Analytics />
     </>
   );

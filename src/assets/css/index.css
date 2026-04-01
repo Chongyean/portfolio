@@ -5,6 +5,20 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.content-wrapper {
+  padding-top: 120px;
+}
+
 @keyframes float-slow {
   0%,
   100% {

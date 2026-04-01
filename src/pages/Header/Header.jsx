@@ -18,13 +18,11 @@ export default function Header() {
     return path;
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    const path = location.pathname.substring(1) || "home";
+    setActiveLink(path);
+  }, [location.pathname]);
 
   const navLinks = [
     { id: "home", icon: FaHome, text: "Home", path: "/" },
@@ -46,10 +44,10 @@ export default function Header() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-gray-900/95 backdrop-blur-md md:bg-transparent md:backdrop-blur-none">
-      <div className="md:fixed md:top-4 md:left-1/2 md:transform md:-translate-x-1/2 w-full md:w-auto">
-        <div className="p-[2px] md:rounded-full bg-gradient-to-r from-emerald-400 via-cyan-500 to-indigo-500 animate-gradient-x">
-          <nav className="bg-gray-900/90 backdrop-blur-md md:rounded-full px-4 md:px-6 py-2.5">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-transparent">
+      <div className="flex justify-center px-4 pt-4 md:pt-4">
+        <div className="p-[2px] rounded-full md:rounded-full bg-gradient-to-r from-emerald-400 via-cyan-500 to-indigo-500 animate-gradient-x w-full md:w-auto">
+          <nav className="bg-gray-900/90 backdrop-blur-md rounded-full px-4 md:px-6 py-2.5">
             {/* Mobile Menu Button */}
             <div className="flex justify-between items-center md:hidden px-2">
               <Link to="/" className="text-white font-bold">Portfolio</Link>
@@ -83,8 +81,8 @@ export default function Header() {
                     `}
                   >
                     <Icon
-                      className={`text-base ${
-                        activeLink === id ? "scale-110" : ""
+                      className={`text-base flex-shrink-0 transition-transform ${
+                        activeLink === id ? "brightness-150" : ""
                       }`}
                     />
                     <span className="inline">{text}</span>
