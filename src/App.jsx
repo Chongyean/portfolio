@@ -8,6 +8,7 @@ import Hero from "./pages/Hero/Hero";
 import Skills from "./pages/Skills/Skills";
 import Education from "./pages/Education/Education";
 import SmoothScrollController from "./components/SmoothScrollController";
+import { Analytics } from "@vercel/analytics/react";
 
 import { Route, Routes } from "react-router-dom";
 
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="/projects" element={<Projects />} />
         </Routes>
       )}
+      <Analytics />
     </>
   );
 }
