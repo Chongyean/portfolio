@@ -11,8 +11,6 @@ const ExperienceCard = ({
   companyLink,
   period,
   description,
-  isExpanded,
-  onToggleExpand,
   icon: Icon,
   index,
 }) => (
@@ -62,26 +60,10 @@ const ExperienceCard = ({
           Featured Role
         </span>
         <p
-          className="text-gray-300 border-l-4 border-blue-500/50 pl-4 mt-4 leading-relaxed overflow-hidden"
-          style={
-            isExpanded
-              ? undefined
-              : {
-                  display: "-webkit-box",
-                  WebkitLineClamp: 3,
-                  WebkitBoxOrient: "vertical",
-                }
-          }
+          className="text-gray-300 border-l-4 border-blue-500/50 pl-4 mt-4 leading-relaxed"
         >
           {description}
         </p>
-        <button
-          type="button"
-          onClick={onToggleExpand}
-          className="mt-auto inline-flex w-fit rounded-md border border-cyan-500/40 bg-cyan-500/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-cyan-300 hover:bg-cyan-500/20 transition-colors duration-200"
-        >
-          {isExpanded ? "Show Less" : "Read More"}
-        </button>
       </div>
 
       {/* Decorative elements */}
@@ -99,7 +81,6 @@ const ExperienceCard = ({
 
 const ExperienceSection = () => {
   const experienceTitle = "Professional Journey";
-  const [isExpanded, setIsExpanded] = useState(false);
   const particles = useMemo(
     () =>
       Array.from({ length: 20 }, () => ({
@@ -270,12 +251,7 @@ const ExperienceSection = () => {
               const expKey = `${exp.title}-${exp.company}`;
               return (
                 <motion.div key={expKey} variants={cardRevealVariants} className="h-full">
-                  <ExperienceCard
-                    index={index}
-                    isExpanded={isExpanded}
-                    onToggleExpand={() => setIsExpanded((current) => !current)}
-                    {...exp}
-                  />
+                  <ExperienceCard index={index} {...exp} />
                 </motion.div>
               );
             })}
