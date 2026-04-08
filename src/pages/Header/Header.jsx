@@ -10,22 +10,38 @@ import {
 import { Link, useLocation } from "react-router-dom";
 
 export default function Header() {
-  const brandLabel = "Chongyean";
-  const hackerLabel = "Hacker404";
+  const homeHackerLabel = "Chongyean";
+  const sectionHackerLabel = "Hacker";
   const scrambleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   const brandFrameMs = 60;
   const brandHoldMs = 520;
-  const brandLoopDelayMs = 360;
   const location = useLocation();
+  const routeBrandLabel = useMemo(() => {
+    const path = location.pathname.toLowerCase();
+
+    if (path === "/" || path === "/home") return "Home";
+    if (path.startsWith("/skills")) return "Skills";
+    if (path.startsWith("/experience")) return "Experience";
+    if (path.startsWith("/education")) return "Education";
+    if (path.startsWith("/projects")) return "Projects";
+    if (path.startsWith("/contact")) return "Contact";
+
+    return "Home";
+  }, [location.pathname]);
+  const routeHackerLabel = useMemo(
+    () => (routeBrandLabel === "Home" ? homeHackerLabel : sectionHackerLabel),
+    [routeBrandLabel]
+  );
   const [activeLink, setActiveLink] = useState(() => {
     const path = location.pathname.substring(1) || "home";
     return path;
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [brandText, setBrandText] = useState(brandLabel);
+  const [brandText, setBrandText] = useState(routeBrandLabel);
   const [decodedNavText, setDecodedNavText] = useState({});
   const brandTimerRef = useRef(null);
   const isBrandAnimatingRef = useRef(false);
+  const didMountRef = useRef(false);
   const navDecodeTimersRef = useRef([]);
 
   useEffect(() => {
@@ -79,21 +95,21 @@ export default function Header() {
   const runBackwardMorphToHacker = useCallback(
     (onDone) => {
       let stepIndex = 0;
-      const totalSteps = brandLabel.length;
+      const totalSteps = routeBrandLabel.length;
 
       const step = () => {
         stepIndex += 1;
 
-        const prefixLen = Math.max(brandLabel.length - stepIndex, 0);
+        const prefixLen = Math.max(routeBrandLabel.length - stepIndex, 0);
         const suffix =
-          stepIndex <= hackerLabel.length
-            ? hackerLabel.slice(hackerLabel.length - stepIndex)
-            : hackerLabel;
+          stepIndex <= routeHackerLabel.length
+            ? routeHackerLabel.slice(routeHackerLabel.length - stepIndex)
+            : routeHackerLabel;
 
-        setBrandText(`${brandLabel.slice(0, prefixLen)}${suffix}`);
+        setBrandText(`${routeBrandLabel.slice(0, prefixLen)}${suffix}`);
 
         if (stepIndex >= totalSteps) {
-          setBrandText(hackerLabel);
+          setBrandText(routeHackerLabel);
           brandTimerRef.current = setTimeout(onDone, brandHoldMs);
           return;
         }
@@ -103,38 +119,46 @@ export default function Header() {
 
       step();
     },
-    [brandFrameMs, brandHoldMs, brandLabel, hackerLabel]
+    [brandFrameMs, brandHoldMs, routeBrandLabel, routeHackerLabel]
   );
 
-  const startBrandLoop = useCallback(() => {
+  const runBrandRouteSequence = useCallback(() => {
     if (isBrandAnimatingRef.current) return;
     isBrandAnimatingRef.current = true;
 
-    const runCycle = () => {
-      runDecodeToLabel(brandLabel, () => {
-        runBackwardMorphToHacker(() => {
-          runDecodeToLabel(brandLabel, () => {
-            runBackwardMorphToHacker(() => {
-              brandTimerRef.current = setTimeout(runCycle, brandLoopDelayMs);
-            });
+    runDecodeToLabel(routeBrandLabel, () => {
+      runBackwardMorphToHacker(() => {
+        runDecodeToLabel(routeBrandLabel, () => {
+          runBackwardMorphToHacker(() => {
+            isBrandAnimatingRef.current = false;
           });
         });
       });
-    };
-
-    runCycle();
-  }, [brandLabel, brandLoopDelayMs, runBackwardMorphToHacker, runDecodeToLabel]);
+    });
+  }, [routeBrandLabel, runBackwardMorphToHacker, runDecodeToLabel]);
 
   useEffect(() => {
-    brandTimerRef.current = setTimeout(() => {
-      startBrandLoop();
-    }, 250);
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      return;
+    }
 
+    clearBrandTimer();
+    isBrandAnimatingRef.current = false;
+    runBrandRouteSequence();
+
+    return () => {
+      clearBrandTimer();
+      isBrandAnimatingRef.current = false;
+    };
+  }, [location.pathname, clearBrandTimer, runBrandRouteSequence]);
+
+  useEffect(() => {
     return () => {
       isBrandAnimatingRef.current = false;
       clearBrandTimer();
     };
-  }, [clearBrandTimer, startBrandLoop]);
+  }, [clearBrandTimer]);
 
   const navLinks = useMemo(
     () => [
